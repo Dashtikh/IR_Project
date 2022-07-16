@@ -155,6 +155,7 @@ tokens.sort()
 
 i = 0
 j = 0
+# boolean
 for i in range(0, len(tokens)):
     print(tokens[i] + ": ", end=' ')
     for j in range(0, len(listOfStemmed)):
@@ -162,4 +163,26 @@ for i in range(0, len(tokens)):
             print("1", end=' ')
         else:
             print("0", end=' ')
+    print("\n")
+
+# tf-idf
+i = 0
+j = 0
+k = 0
+tf = 0
+idf = 0
+for i in range(0, len(tokens)):
+    print(tokens[i] + " : ", end=" ")
+    for p in range(0, len(listOfStemmed)):
+        if tokens[i] in listOfStemmed[p]:
+            idf = idf + 1
+    for j in range(0, len(listOfStemmed)):
+        for k in range(0, len(listOfStemmed[j])):
+            if tokens[i] == listOfStemmed[j][k]:
+                tf = tf + 1
+        print(F"{tf} - {idf} : ", end=" ")
+        print("{:.4f}".format(tf / idf) + " ", end=" ")
+        tf = 0
+    tf = 0
+    idf = 0
     print("\n")
