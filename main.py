@@ -16,6 +16,8 @@ else:
     ssl._create_default_https_context = _create_unverified_https_context
 # nltk.download()
 listOfStemmed = []
+numOfDoc = 5
+tokens = []
 stopWords = ["0o", "0s", "3a", "3b", "3d", "6b", "6o", "a", "a1", "a2", "a3", "a4", "ab", "able", "about", "above",
              "abst", "ac", "accordance", "according", "accordingly", "across", "act", "actually", "ad", "added", "adj",
              "ae", "af", "affected", "affecting", "affects", "after", "afterwards", "ag", "again", "against", "ah",
@@ -110,10 +112,10 @@ stopWords = ["0o", "0s", "3a", "3b", "3d", "6b", "6o", "a", "a1", "a2", "a3", "a
              "world", "would", "wouldn", "wouldnt", "wouldn't", "www", "x", "x1", "x2", "x3", "xf", "xi", "xj", "xk",
              "xl", "xn", "xo", "xs", "xt", "xv", "xx", "y", "y2", "yes", "yet", "yj", "yl", "you", "youd", "you'd",
              "you'll", "your", "youre", "you're", "yours", "yourself", "yourselves", "you've", "yr", "ys", "yt", "z",
-             "zero", "zi", "zz", "-", "(", ")", "[", "]", ".", ",", ":", "'s"]
+             "zero", "zi", "zz", "-", "(", ")", "[", "]", ".", ",", ":", "'s", "``", "&", "$", "'", "''"]
 repository = []
 ps = SnowballStemmer("english")
-for i in range(0, 2):
+for i in range(0, numOfDoc):
     url = 'https://en.wikipedia.org/wiki/Special:Random'
 
     reqs = requests.get(url)
@@ -132,7 +134,7 @@ for i in range(0, 2):
 
 noSW = []
 
-for j in range(0, 2):
+for j in range(0, numOfDoc):
     stringToToken = word_tokenize(repository[j])
     for k in range(0, len(stringToToken)):
         tokenToStem = ps.stem(stringToToken[k])
@@ -140,9 +142,24 @@ for j in range(0, 2):
             pass
         else:
             noSW.append(tokenToStem)
-    print(noSW)
     listOfStemmed.append(noSW)
-    noSW.clear()
-    stringToToken.clear()
+    noSW = []
+    stringToToken = []
+for m in range(0, numOfDoc):
+    for n in range(0, len(listOfStemmed[m])):
+        if listOfStemmed[m][n] in tokens:
+            pass
+        else:
+            tokens.append(listOfStemmed[m][n])
+tokens.sort()
 
-print(listOfStemmed)
+i = 0
+j = 0
+for i in range(0, len(tokens)):
+    print(tokens[i] + ": ", end=' ')
+    for j in range(0, len(listOfStemmed)):
+        if tokens[i] in listOfStemmed[j]:
+            print("1", end=' ')
+        else:
+            print("0", end=' ')
+    print("\n")
